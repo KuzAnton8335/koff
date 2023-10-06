@@ -1,0 +1,52 @@
+.pagination {
+  width: 200px;
+  margin: 0 auto;
+  // .pagination__bar
+
+  &__bar {
+    background-color: #eeeff2;
+    height: 6px;
+    width: 100%;
+    border-radius: 3px;
+    margin-bottom: 16px;
+
+    &::after {
+      content: "";
+      display: block;
+      background-color: #780096;
+      height: 100%;
+      border-radius: 3px;
+      width: var(--width);
+      transition: width 0.36s ease-in-out;
+    }
+  }
+
+  // .pagination__arrays
+
+  &__arrays {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  // .pagination__left
+
+  &__left {
+  }
+
+  // .pagination__right
+
+  &__right {
+  }
+
+  // .pagination__current
+
+  &__current {
+  }
+
+  // .pagination__total
+
+  &__total {
+  }
+}
