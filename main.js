@@ -5,6 +5,7 @@ import { Header } from './modules/Header/header';
 import { Main } from './modules/Main/main';
 // import { Order } from './modules/Order/order';
 import { Productlist } from './modules/ProductList/productlist';
+import { Apiservice } from './services/Apiservice';
 import './style.scss';
 
 const productSlider = () => {
@@ -35,6 +36,7 @@ const productSlider = () => {
 
 
 const init = () => {
+  const api = new Apiservice();
   new Header().mount();
   new Main().mount();
   // new Order().mount(new Main().element);
@@ -43,8 +45,9 @@ const init = () => {
 
   productSlider();
   const router = new Navigo("/", { linksSelector: 'a[href^="/"]' });
-  router.on("/", () => {
-    new Productlist().mount(new Main().element, [1, 2, 3],);
+  router.on("/", async () => {
+    const product = await api.getProducts();
+    new Productlist().mount(new Main().element, product);
   },
     {
       leave(done) {
@@ -55,12 +58,21 @@ const init = () => {
         console.log("already");
       },
     })
-    .on('/category', (obj) => {
-      console.log(obj);
-      console.log('category');
+    .on('/category', () => {
+      new Productlist().mount(new Main().element, [1, 2, 3, 4, 5, 6], 'Категории');
+    }, {
+      leave(done) {
+        console.log("leave");
+        done();
+      },
     })
     .on('/favorite', () => {
-      console.log('favorite');
+      new Productlist().mount(new Main().element, [1, 2, 3,], 'Избранное');
+    }, {
+      leave(done) {
+        console.log("leave");
+        done();
+      },
     })
     .on('/search', () => {
       console.log('search');
@@ -76,7 +88,12 @@ const init = () => {
       console.log('order');
     })
     .notFound(() => {
-      document.body.innerHTML = '<h2>Страница не найдена</h2>';
+      new Main().element.innerHTML = `<h2>Страница не найдена</h2>
+      <p>Через 5 секунд вы будуте перенаправлены <a href="/">на главную страницу</a></p>
+      `;
+      setTimeout(() => {
+        router.navigate("/");
+      }, 5000);
     })
   router.resolve();
 }
