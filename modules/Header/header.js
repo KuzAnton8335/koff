@@ -95,7 +95,7 @@ export class Header {
     cartLink.href = '/cart';
     const linkText = document.createElement('span');
     linkText.classList.add('header__link-text');
-    linkText.textContent = 'Избранное';
+    linkText.textContent = 'Корзина';
     const countElement = document.createElement('span');
     countElement.classList.add('header__count');
     countElement.textContent = '(0)';

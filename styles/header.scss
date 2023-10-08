@@ -133,6 +133,13 @@
     }
   }
 
+  &__cart-text {
+    display: none;
+    @media (min-width: 580px) {
+      display: block;
+    }
+  }
+
   // .header__count
 
   &__count {
