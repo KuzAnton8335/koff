@@ -14,14 +14,14 @@ export class Order {
     return Order.instance
   }
 
-  mount() {
+  mount(parent) {
     if (this.isMounted) {
       return;
     }
 
     const orderContent = this.getOrderContent();
     this.containerElement.append(orderContent);
-    document.body.append(this.element);
+    parent.append(this.element);
     this.isMounted = true;
   }
 

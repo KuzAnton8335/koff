@@ -1,5 +1,6 @@
 import Navigo from 'navigo';
 import 'normalize.css';
+import { Catalog } from './modules/Catalog/Catalog';
 import { Footer } from './modules/Footer/footer';
 import { Header } from './modules/Header/header';
 import { Main } from './modules/Main/main';
@@ -37,40 +38,52 @@ const productSlider = () => {
 
 const init = () => {
   const api = new Apiservice();
+  const router = new Navigo("/", { linksSelector: 'a[href^="/"]' });
+
   new Header().mount();
   new Main().mount();
   // new Order().mount(new Main().element);
   new Footer().mount();
 
+  api.getProductCategories().then(data => {
+    new Catalog().mount(new Main().element, data);
+    router.updatePageLinks();
+  });
 
   productSlider();
-  const router = new Navigo("/", { linksSelector: 'a[href^="/"]' });
+
+
   router.on("/", async () => {
     const product = await api.getProducts();
     new Productlist().mount(new Main().element, product);
+    router.updatePageLinks();
   },
     {
       leave(done) {
-        console.log("leave");
+        new Productlist().unmount();
         done();
       },
       already() {
         console.log("already");
       },
     })
-    .on('/category', () => {
-      new Productlist().mount(new Main().element, [1, 2, 3, 4, 5, 6], 'Категории');
+    .on('/category', async ({ params: { slug } }) => {
+      const product = await api.getProducts();
+      new Productlist().mount(new Main().element, product, slug);
+      router.updatePageLinks();
     }, {
       leave(done) {
-        console.log("leave");
+        new Productlist().unmount();
         done();
       },
     })
-    .on('/favorite', () => {
-      new Productlist().mount(new Main().element, [1, 2, 3,], 'Избранное');
+    .on('/favorite', async () => {
+      const product = await api.getProducts();
+      new Productlist().mount(new Main().element, product, 'Избранное');
+      router.updatePageLinks();
     }, {
       leave(done) {
-        console.log("leave");
+        new Productlist().unmount();
         done();
       },
     })
