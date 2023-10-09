@@ -3,7 +3,7 @@ import 'normalize.css';
 import { Footer } from './modules/Footer/footer';
 import { Header } from './modules/Header/header';
 import { Main } from './modules/Main/main';
-// import { Order } from './modules/Order/order';
+import { Order } from './modules/Order/order';
 import { Productlist } from './modules/ProductList/productlist';
 import { Apiservice } from './services/Apiservice';
 import './style.scss';
@@ -84,9 +84,15 @@ const init = () => {
       console.log('cart');
     })
     .on('/order', () => {
-
+      new Order().mount(new Main().element);
       console.log('order');
-    })
+    },
+      {
+        leave(done) {
+          console.log("leave");
+          done();
+        },
+      })
     .notFound(() => {
       new Main().element.innerHTML = `<h2>Страница не найдена</h2>
       <p>Через 5 секунд вы будуте перенаправлены <a href="/">на главную страницу</a></p>

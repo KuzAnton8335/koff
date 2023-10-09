@@ -1,6 +1,5 @@
 import { addContainer } from "../addContainer";
 
-
 export class Order {
   static instance = null;
 
@@ -20,7 +19,7 @@ export class Order {
       return;
     }
 
-    const orderContent = this.getContent();
+    const orderContent = this.getOrderContent();
     this.containerElement.append(orderContent);
     document.body.append(this.element);
     this.isMounted = true;
@@ -31,44 +30,61 @@ export class Order {
     this.isMounted = false;
   }
 
-  getContent() {
+  getOrderContent() {
     const orderContent = document.createElement('div');
     orderContent.classList.add('order__content');
-    const orderTopInfo = this.getTopinfo();
-    const orderTableInfo = this.getTableinfo();
-    getContent.append(orderTopInfo, orderTableInfo);
+    const orderTopInfo = this.getorderTopInfo();
+    const orderTableInfo = this.getorderTableInfo();
+    orderContent.appendChild(orderTopInfo);
+    orderContent.appendChild(orderTableInfo);
     return orderContent;
   }
 
-  getTopinfo() {
+  getorderTopInfo() {
     const orderTopInfo = document.createElement('div');
-    orderTopInfo.classList.add('order__table-info');
-    const orderTitle = this.getOrdertitle();
-    const orderTotalSum = this.getOrderTotalsum();
-    const orderNumber = this.getOrdernumber();
-
-    orderTopInfo.append(orderTitle, orderTotalSum, orderNumber);
+    orderTopInfo.classList.add('order__top-info');
+    orderTopInfo.innerHTML =
+      `<h2 class="order__title">Заказ успешно размещен </h2>
+    <p class="order__totel-sum">20&nbsp;000&nbsp;₽</p>
+    <p class="order__number">№43435</p>`;
     return orderTopInfo;
   }
 
-  getOrdertitle() {
-    const orderTitle = document.createElement('h2');
-    orderTitle.classList.add('order__title');
-    orderTitle.textContent = 'Заказ успешно размещен';
-    return orderTitle;
+  getorderTableInfo() {
+    const orderTableInfo = document.createElement('div');
+    orderTableInfo.classList.add('order__table-info');
+    orderTableInfo.innerHTML = `
+    <h3 class="order__subtitle">Данные доставки</h3>
+    <table class="order__table table">
+      <tr class="order__table-row">
+        <td class="order__table-field">Получатель</td>
+        <td class="order__table-value">Иванов Петр Александрович</td>
+      </tr>
+      <tr class="order__table-row">
+        <td class="order__table-field">Телефон</td>
+        <td class="order__table-value">+7 (737) 346 23 00</td>
+      </tr>
+      <tr class="order__table-row">
+        <td class="order__table-field">E-mail</td>
+        <td class="order__table-value">Ivanov84@gmail.com</td>
+      </tr>
+      <tr class="order__table-row">
+        <td class="order__table-field">Адрес доставки</td>
+        <td class="order__table-value">Москва, ул. Ленина, 21, кв. 33</td>
+      </tr>
+      <tr class="order__table-row">
+        <td class="order__table-field">Способ оплаты</td>
+        <td class="order__table-value">Картой при получении</td>
+      </tr>
+      <tr class="order__table-row">
+        <td class="order__table-field">Способ получения</td>
+        <td class="order__table-value">Доставка</td>
+      </tr>
+    </table>
+    <a href="index.html" class="order__links">На главную</a>
+    `
+    return orderTableInfo;
   }
 
-  getOrderTotalsum() {
-    const orderTotalSum = document.createElement('p');
-    orderTotalSum.classList.add('order__totel-sum');
-    orderTotalSum.textContent = '20&nbsp;000&nbsp;₽';
-    return orderTotalSum;
-  }
 
-  getOrdernumber() {
-    const orderNumber = document.createElement('p');
-    orderNumber.classList.add('order__number');
-    orderNumber.textContent = '№43435';
-    return orderNumber;
-  }
 }
