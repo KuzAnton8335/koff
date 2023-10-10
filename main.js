@@ -6,6 +6,7 @@ import { Header } from './modules/Header/header';
 import { Main } from './modules/Main/main';
 import { Order } from './modules/Order/order';
 import { Productlist } from './modules/ProductList/productlist';
+import { defaultPage } from './modules/defaultPage/defaultPage';
 import { Apiservice } from './services/Apiservice';
 import './style.scss';
 
@@ -98,18 +99,17 @@ const init = () => {
     })
     .on('/order', () => {
       new Order().mount(new Main().element);
+      router.updatePageLinks();
       console.log('order');
     },
       {
         leave(done) {
-          console.log("leave");
+          new Order().unmount();
           done();
         },
       })
     .notFound(() => {
-      new Main().element.innerHTML = `<h2>Страница не найдена</h2>
-      <p>Через 5 секунд вы будуте перенаправлены <a href="/">на главную страницу</a></p>
-      `;
+      new defaultPage().mount(new Main().element);
       router.updatePageLinks();
       setTimeout(() => {
         router.navigate("/");
@@ -117,7 +117,7 @@ const init = () => {
     },
       {
         leave(done) {
-          new Main().unmount();
+          new defaultPage().unmount();
           done();
         }
       }
