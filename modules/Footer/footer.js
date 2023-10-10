@@ -1,5 +1,5 @@
+import { getLogo } from '../../features/Logo/logo';
 import { addContainer } from "../addContainer";
-import logoImg from '/img/logo.svg';
 
 export class Footer {
   static instance = null;
@@ -20,7 +20,7 @@ export class Footer {
       return;
     }
 
-    const logo = this.getLogo();
+    const logo = getLogo('footer');
     this.containerElement.append(logo);
     this.containerElement.insertAdjacentHTML('beforeend', this.getHTML());
     document.body.append(this.element);
@@ -32,18 +32,7 @@ export class Footer {
     this.isMounted = false;
   }
 
-  getLogo() {
-    const logo = document.createElement('a');
-    logo.classList.add('footer__link-logo');
-    logo.href = '/';
-    const imgLogo = new Image();
-    imgLogo.classList.add('footer__logo');
-    imgLogo.src = logoImg;
-    imgLogo.alt = 'логотип мебельного маркета Koff';
-    logo.append(imgLogo);
 
-    return logo;
-  }
 
   getHTML() {
     return `

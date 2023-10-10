@@ -110,10 +110,18 @@ const init = () => {
       new Main().element.innerHTML = `<h2>Страница не найдена</h2>
       <p>Через 5 секунд вы будуте перенаправлены <a href="/">на главную страницу</a></p>
       `;
+      router.updatePageLinks();
       setTimeout(() => {
         router.navigate("/");
       }, 5000);
-    })
+    },
+      {
+        leave(done) {
+          new Main().unmount();
+          done();
+        }
+      }
+    )
   router.resolve();
 }
 init();

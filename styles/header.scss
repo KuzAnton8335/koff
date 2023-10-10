@@ -109,9 +109,17 @@
     display: flex;
     flex-direction: row-reverse;
 
+    svg {
+      fill: #fff;
+      stroke: #000;
+    }
     &:hover,
     &:active {
       color: #780096;
+
+      svg {
+        fill: #780096;
+      }
     }
 
     &:focus-visible {

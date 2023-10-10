@@ -18,7 +18,7 @@
 
   &__img {
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 16px;
     aspect-ratio: 7/6;
 
@@ -76,6 +76,18 @@
     color: #780096;
     border-radius: 32px;
     border: 1px solid #780096;
+
+    &:hover {
+      color: #fff;
+      border-color: #9200b7;
+      background-color: #9200b7;
+    }
+
+    &:active {
+      color: #c0f;
+      border-color: #c0f;
+      background-color: transparent;
+    }
   }
 
   // .card__favorit
@@ -84,5 +96,24 @@
     position: absolute;
     top: 12px;
     right: 12px;
+
+    svg {
+      fill: #fff;
+    }
+
+    &:hover,
+    &_active {
+      color: #780096;
+      svg {
+        fill: #780096;
+      }
+    }
+
+    &:active {
+      color: #c0f;
+      svg {
+        fill: #c0f;
+      }
+    }
   }
 }
