@@ -30,23 +30,9 @@
     gap: 8px;
   }
 
-  // .pagination__left
-
-  &__left {
-  }
-
-  // .pagination__right
-
-  &__right {
-  }
-
-  // .pagination__current
-
-  &__current {
-  }
-
-  // .pagination__total
-
-  &__total {
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 }

@@ -64,26 +64,29 @@ const init = () => {
         new Productlist().unmount();
         done();
       },
-      already() {
-        console.log("already");
+      already(match) {
+        match.route.handler(match);
       },
     })
-    .on('/category', async ({ params: { slug } }) => {
-      const { data: products } = await api.getProducts({ category: slug });
-      console.log(products);
+    .on('/category', async ({ params: { slug, page } }) => {
+      const { data: products, pagination } = await api.getProducts({ category: slug, page: page || 1 });
       new Productlist().mount(new Main().element, products, slug);
+      new Pagination().mount(new Productlist().containerElement).update(pagination);
       router.updatePageLinks();
     }, {
       leave(done) {
         new Productlist().unmount();
         done();
       },
+      already(match) {
+        match.route.handler(match);
+      }
     })
     .on('/favorite', async () => {
       const favorite = new FavoriteService().get();
       const { data: product } = await api.getProducts({ list: favorite.join(",") });
-      console.log(product);
-      new Productlist().mount(new Main().element, product, 'Избранное');
+      new Productlist().mount(new Main().element, product, 'Избранное',
+        "Вы ничего не добавили в избранное,пожалуйста,добавьте что-нибудь...");
       router.updatePageLinks();
     }, {
       leave(done) {

@@ -16,15 +16,21 @@ export class Productlist {
     return Productlist.instance
   }
 
-  mount(parent, data, title) {
+  mount(parent, data, title, emtyText) {
     this.containerElement.textContent = '';
     const titleElem = document.createElement('h2');
     titleElem.textContent = title ? title : 'Список товаров';
     titleElem.className = title ? 'goods__title' : 'goods__title visually-hidden';
 
     this.containerElement.append(titleElem);
-    this.updateListElem(data);
 
+    if (data && data.length) {
+      this.updateListElem(data);
+    } else {
+      this.containerElement.insertAdjacentHTML('beforeend', `
+       <p class="goods__empty">${emtyText || 'Произошла ошибка попробуйте снова'}</p>
+      `);
+    }
     if (this.isMounted) {
       return;
     }
