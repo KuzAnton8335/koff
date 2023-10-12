@@ -50,8 +50,4 @@ export class Productlist {
     listElem.append(...listItems);
     this.containerElement.append(listElem);
   }
-
-
-
-
 }

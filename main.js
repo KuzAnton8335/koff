@@ -8,6 +8,7 @@ import { Order } from './modules/Order/order';
 import { Productlist } from './modules/ProductList/productlist';
 import { defaultPage } from './modules/defaultPage/defaultPage';
 import { Apiservice } from './services/Apiservice';
+import { FavoriteService } from './services/StorageServices';
 import './style.scss';
 
 const productSlider = () => {
@@ -43,7 +44,6 @@ const init = () => {
 
   new Header().mount();
   new Main().mount();
-  // new Order().mount(new Main().element);
   new Footer().mount();
 
   api.getProductCategories().then(data => {
@@ -55,8 +55,8 @@ const init = () => {
 
 
   router.on("/", async () => {
-    const product = await api.getProducts();
-    new Productlist().mount(new Main().element, product);
+    const products = await api.getProducts();
+    new Productlist().mount(new Main().element, products);
     router.updatePageLinks();
   },
     {
@@ -69,8 +69,9 @@ const init = () => {
       },
     })
     .on('/category', async ({ params: { slug } }) => {
-      const product = await api.getProducts();
-      new Productlist().mount(new Main().element, product, slug);
+      const { data: products } = await api.getProducts({ category: slug });
+      console.log(products);
+      new Productlist().mount(new Main().element, products, slug);
       router.updatePageLinks();
     }, {
       leave(done) {
@@ -79,7 +80,9 @@ const init = () => {
       },
     })
     .on('/favorite', async () => {
-      const product = await api.getProducts();
+      const favorite = new FavoriteService().get();
+      const { data: product } = await api.getProducts({ list: favorite.join(",") });
+      console.log(product);
       new Productlist().mount(new Main().element, product, 'Избранное');
       router.updatePageLinks();
     }, {
