@@ -72,12 +72,16 @@ export class Pagination {
 
     this.paginationCurrent = document.createElement('span')
     this.paginationCurrent.classList.add('pagination__current');
+
     const paginationSeparator = document.createTextNode('из');
 
     this.paginationTotal = document.createElement('span');
     this.paginationTotal.classList.add('pagination__total');
 
-    paginationInfo.append(this.paginationCurrent, paginationSeparator, this.paginationTotal);
+    paginationInfo.append(
+      this.paginationCurrent,
+      paginationSeparator,
+      this.paginationTotal);
 
     paginationArrays.append(
       this.paginationLeft,
@@ -91,7 +95,7 @@ export class Pagination {
   }
 
   mount(parent) {
-    parent.insertAjacmentElement(this.pagination);
+    parent.append(this.pagination);
     return this;
   }
 }

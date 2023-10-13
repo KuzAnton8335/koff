@@ -1,5 +1,6 @@
 import Navigo from 'navigo';
 import 'normalize.css';
+import { Pagination } from './features/Pagination/Pagination';
 import { Catalog } from './modules/Catalog/Catalog';
 import { Footer } from './modules/Footer/footer';
 import { Header } from './modules/Header/header';
@@ -71,7 +72,8 @@ const init = () => {
     .on('/category', async ({ params: { slug, page } }) => {
       const { data: products, pagination } = await api.getProducts({ category: slug, page: page || 1 });
       new Productlist().mount(new Main().element, products, slug);
-      new Pagination().mount(new Productlist().containerElement).update(pagination);
+      new Pagination().mount(new Productlist().containerElement)
+      .update(pagination);
       router.updatePageLinks();
     }, {
       leave(done) {
