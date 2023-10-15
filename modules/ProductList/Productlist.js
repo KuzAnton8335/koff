@@ -31,11 +31,9 @@ export class Productlist {
        <p class="goods__empty">${emtyText || 'Произошла ошибка попробуйте снова'}</p>
       `);
     }
-    if (this.isMounted) {
-      return;
-    }
+
     parent.append(this.element);
-    this.isMounted = true;
+
   }
 
   unmount() {

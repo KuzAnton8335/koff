@@ -10,18 +10,44 @@ export class BreadCrumbs {
       this.element = document.createElement('div');
       this.element.classList.add('breadcrumb');
       this.containerElement = addContainer(this.element);
+      this.isMounted = false;
     }
 
     return BreadCrumbs.instance;
   }
 
+  checkPrevData(data) {
+    let isSame = false;
+    if (!this.prevData) {
+      this.prevData = data;
+    }
+    isSame = data.every((item, i) => {
+      console.log(item.text === this.prevData[i].text);
+      return item.text === this.prevData[i].text
+    });
+    this.prevData = data;
+    return isSame;
+  }
+
   mount(parent, data) {
+    if (this.isMounted && this.checkPrevData(data)) {
+      return;
+    }
+
+    if (this.isMounted) {
+      this.render(data);
+      return;
+    }
+
+
     this.render(data);
     parent.append(this.element);
+    this.isMounted = true;
     router.updatePageLinks();
   }
 
   unmount() {
+    this.isMounted = false;
     this.element.remove();
   }
 
@@ -58,23 +84,4 @@ export class BreadCrumbs {
 }
 
 
-/*
-<div class="breadcrumb">
-          <div class="container">
-            <ul class="breadcrumb__list">
-              <li class="breadcrumb__item">
-                <a href="/" class="breadcrumb__link">Главная</a>
-                <span class="breadcrumb__separator">&gt;</span>
-              </li>
-              <li class="breadcrumb__item">
-                <a href="/category?slug=Kресла" class="breadcrumb__link">Кресла</a>
-                <span class="breadcrumb__separator">&gt;</span>
-              </li>
-              <li class="breadcrumb__item">
-                <a href="/" class="breadcrumb__link">Кресло с подлокотниками</a>
-                <span class="breadcrumb__separator">&gt;</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-*/
+

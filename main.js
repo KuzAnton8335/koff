@@ -54,8 +54,10 @@ const init = () => {
       });
       new BreadCrumbs().mount(new Main().element, [{ text: slug }]);
       new Productlist().mount(new Main().element, products, slug);
-      new Pagination().mount(new Productlist().containerElement)
-        .update(pagination);
+      if (pagination.totalProducts > pagination.limit) {
+        new Pagination().mount(new Productlist().containerElement)
+          .update(pagination);
+      }
       router.updatePageLinks();
     }, {
       leave(done) {
@@ -78,6 +80,28 @@ const init = () => {
       new BreadCrumbs().mount(new Main().element, [{ text: 'Избранное' }]);
       new Productlist().mount(new Main().element, product, 'Избранное',
         "Вы ничего не добавили в избранное,пожалуйста,добавьте что-нибудь...");
+      if (pagination?.totalProducts > pagination?.limit) {
+        new Pagination()
+          .mount(new Productlist().containerElement).update(pagination);
+      }
+      router.updatePageLinks();
+    },
+      {
+        leave(done) {
+          new BreadCrumbs().unmount();
+          new Productlist().unmount();
+          new Catalog().unmount();
+          done();
+        },
+      })
+    .on('/search', async ({ params: { q } }) => {
+      new Catalog().mount(new Main().element);
+      const { data: product, pagination } = await api.getProducts({
+        q,
+      });
+      new BreadCrumbs().mount(new Main().element, [{ text: 'Поиск' }]);
+      new Productlist().mount(new Main().element, product, `Поиск: ${q}`,
+        `Ничего ненайдено по вашему запросу ${q}`);
       new Pagination().mount(new Productlist().containerElement).update(pagination);
       router.updatePageLinks();
     }, {
@@ -87,9 +111,9 @@ const init = () => {
         new Catalog().unmount();
         done();
       },
-    })
-    .on('/search', () => {
-      console.log('search');
+      already(match) {
+        match.route.handler(match);
+      }
     })
     .on('/product/:id', async (obj) => {
       new Catalog().mount(new Main().element);
